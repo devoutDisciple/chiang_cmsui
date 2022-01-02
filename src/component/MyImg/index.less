@@ -1,0 +1,26 @@
+.con {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+}
+
+.fix-height {
+    height: 100%;
+    width: auto;
+    :global {
+        .ant-image {
+            height: 100%;
+        }
+    }
+}
+
+.fix-width {
+    width: 100%;
+    height: auto;
+    :global {
+        .ant-image {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+      "allowJs": true,
+      "baseUrl": ".",
+      "experimentalDecorators": true,
+      "jsx": "react",
+      "newLine": "lf",
+      "outDir": "dist",
+      "paths": {
+        "@component": ["src/component"],
+        "@component/*": ["src/component/*"],
+        "@asserts": ["src/asserts"],
+        "@asserts/*": ["src/asserts/*"],
+        "@config": ["src/config"],
+        "@config/*": ["src/config/*"],
+        "@hooks": ["src/hooks"],
+        "@hooks/*": ["src/hooks/*"],
+        "@redux": ["src/redux"],
+        "@redux/*": ["src/redux/*"],
+        "@service": ["src/service"],
+        "@service/*": ["src/service/*"],
+        "@static": ["src/static"],
+        "@static/*": ["src/static/*"],
+        "@utils": ["src/utils"],
+        "@utils/*": ["src/utils/*"],
+        "@views": ["src/views"],
+        "@views/*": ["src/views/*"],
+        "@menu": ["src/menu"],
+        "@menu/*": ["src/menu/*"],
+        "@router": ["src/router"],
+        "@router/*": ["src/router/*"],
+        "@store": ["src/store"],
+        "@store/*": ["src/store/*"]
+      }
+    }
+  }
+  
