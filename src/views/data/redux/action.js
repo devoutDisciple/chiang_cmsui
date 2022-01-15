@@ -1,24 +1,24 @@
-import { getData, getUserNumData, getPublishNumData, getGoodsNumData, getCommentsNumData } from '@service/data';
+import { getData, getUserNumData, getSalesMoneyData, getSignupData, getTeamData } from '@service/data';
 
 // 获取汇总数据
 export const getDataFunc = () => (dispatch) => {
 	getData().then((res) => {
 		dispatch({
-			type: 'data/setTotalData',
+			type: 'data/setStatisticsData',
 			payload: res.data,
 		});
 	});
 };
 
 // 获取用户增长曲线
-export const getUserNumDataFunc = () => (dispatch) => {
-	getUserNumData().then((res) => {
+export const getUserNumDataFunc = (date) => (dispatch) => {
+	getUserNumData(date).then((res) => {
 		if (Array.isArray(res.data)) {
 			const xAxis = [];
 			const yAxis = [];
 			res.data.forEach((item) => {
-				xAxis.push(item.create_time);
-				yAxis.push(item.user_total);
+				xAxis.push(item.time);
+				yAxis.push(item.num);
 			});
 			dispatch({
 				type: 'data/setUserData',
@@ -29,35 +29,35 @@ export const getUserNumDataFunc = () => (dispatch) => {
 };
 
 // 获取发布内容增长曲线
-export const getPublishNumDataFunc = () => (dispatch) => {
-	getPublishNumData().then((res) => {
+export const getSalesNumDataFunc = (date) => (dispatch) => {
+	getSalesMoneyData(date).then((res) => {
 		if (Array.isArray(res.data)) {
 			const xAxis = [];
 			const yAxis = [];
 			res.data.forEach((item) => {
-				xAxis.push(item.create_time);
-				yAxis.push(item.publish_total);
+				xAxis.push(item.time);
+				yAxis.push(item.money);
 			});
 			dispatch({
-				type: 'data/setPublishData',
+				type: 'data/setSalesData',
 				payload: { xAxis, yAxis },
 			});
 		}
 	});
 };
 
-// 获取点赞增长曲线
-export const getGoodsNumDataFunc = () => (dispatch) => {
-	getGoodsNumData().then((res) => {
+// 获取报名增长曲线
+export const getSignupDataFunc = (date) => (dispatch) => {
+	getSignupData(date).then((res) => {
 		if (Array.isArray(res.data)) {
 			const xAxis = [];
 			const yAxis = [];
 			res.data.forEach((item) => {
-				xAxis.push(item.create_time);
-				yAxis.push(item.goods_total);
+				xAxis.push(item.time);
+				yAxis.push(item.num);
 			});
 			dispatch({
-				type: 'data/setGoodsData',
+				type: 'data/setSignupData',
 				payload: { xAxis, yAxis },
 			});
 		}
@@ -65,17 +65,17 @@ export const getGoodsNumDataFunc = () => (dispatch) => {
 };
 
 // 获取评论增长曲线
-export const getCommentsNumDataFunc = () => (dispatch) => {
-	getCommentsNumData().then((res) => {
+export const getTeamDataFunc = (date) => (dispatch) => {
+	getTeamData(date).then((res) => {
 		if (Array.isArray(res.data)) {
 			const xAxis = [];
 			const yAxis = [];
 			res.data.forEach((item) => {
-				xAxis.push(item.create_time);
-				yAxis.push(item.comment_total);
+				xAxis.push(item.time);
+				yAxis.push(item.num);
 			});
 			dispatch({
-				type: 'data/setCommnetsData',
+				type: 'data/setTeamData',
 				payload: { xAxis, yAxis },
 			});
 		}

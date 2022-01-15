@@ -11,7 +11,7 @@ export default () => {
 	useEffect(() => {
 		message.config({ top: 100, duration: 2, maxCount: 1 });
 		// 获取用户是否登录
-		dispatch(getLoginFunc());
+		// dispatch(getLoginFunc());
 	}, [dispatch]);
 
 	return (
@@ -21,7 +21,7 @@ export default () => {
 					{router.rootRouter.map((item) => (
 						<Route key={item.key} path={item.path} component={lazy(item.components)} />
 					))}
-					<Redirect key="root" to={{ pathname: '/home/data' }} />
+					<Redirect key="root" to={{ pathname: '/home' }} />
 				</Switch>
 			</Suspense>
 		</HashRouter>

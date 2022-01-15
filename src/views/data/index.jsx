@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Card } from 'antd';
+import { Card, DatePicker } from 'antd';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import echarts from '@component/ercharts/index';
 import echarts_theme from '@component/ercharts/echarts_theme';
@@ -8,26 +9,53 @@ import styles from './index.less';
 import './redux/reducer';
 import * as action from './redux/action';
 
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY-MM-DD';
+const defaultTime = [moment(moment().subtract(7, 'days'), dateFormat), moment(new Date(), dateFormat)];
+
 export default () => {
 	const dispatch = useDispatch();
-	const { totalData, userData, publishData, goodsData, commentsData } = useSelector((state) => state.data);
+	const { statisticsData, userData, salesData, signupData, teamData } = useSelector((state) => state.data);
 
 	useEffect(() => {
+		console.log(defaultTime, 7382);
 		// 获取汇总数据
 		dispatch(action.getDataFunc());
 		// 获取用户增长曲线
-		dispatch(action.getUserNumDataFunc());
-		// 获取发布内容增长曲线
-		dispatch(action.getPublishNumDataFunc());
-		// 获取点赞增长曲线
-		dispatch(action.getGoodsNumDataFunc());
+		dispatch(
+			action.getUserNumDataFunc({
+				startTime: moment(defaultTime[0]).format(dateFormat),
+				endTime: moment(defaultTime[2]).format(dateFormat),
+			}),
+		);
+		// 获取收入增长曲线
+		dispatch(
+			action.getSalesNumDataFunc({
+				startTime: moment(defaultTime[0]).format(dateFormat),
+				endTime: moment(defaultTime[2]).format(dateFormat),
+			}),
+		);
+		// 获取组团增长曲线
+		dispatch(
+			action.getSignupDataFunc({
+				startTime: moment(defaultTime[0]).format(dateFormat),
+				endTime: moment(defaultTime[2]).format(dateFormat),
+			}),
+		);
 		// 获取评论增长曲线
-		dispatch(action.getCommentsNumDataFunc());
+		dispatch(
+			action.getTeamDataFunc({
+				startTime: moment(defaultTime[0]).format(dateFormat),
+				endTime: moment(defaultTime[2]).format(dateFormat),
+			}),
+		);
 	}, [dispatch]);
 
 	useEffect(() => {
 		if (Array.isArray(userData.xAxis) && userData.xAxis.length !== 0) {
-			const myChart = echarts.init(document.getElementById('member'), echarts_theme);
+			let myChart = '';
+			myChart = echarts.getInstanceByDom(document.getElementById('member'));
+			if (!myChart) myChart = echarts.init(document.getElementById('member'), echarts_theme);
 			myChart.setOption({
 				xAxis: {
 					type: 'category',
@@ -43,7 +71,7 @@ export default () => {
 					{
 						data: userData.yAxis,
 						type: 'line',
-						smooth: true,
+						smooth: false,
 					},
 				],
 			});
@@ -51,12 +79,14 @@ export default () => {
 	}, [userData.xAxis, userData.yAxis]);
 
 	useEffect(() => {
-		if (Array.isArray(publishData.xAxis) && publishData.xAxis.length !== 0) {
-			const myChart = echarts.init(document.getElementById('publish'), echarts_theme);
+		if (Array.isArray(salesData.xAxis) && salesData.xAxis.length !== 0) {
+			let myChart = '';
+			myChart = echarts.getInstanceByDom(document.getElementById('sales'));
+			if (!myChart) myChart = echarts.init(document.getElementById('sales'), echarts_theme);
 			myChart.setOption({
 				xAxis: {
 					type: 'category',
-					data: publishData.xAxis,
+					data: salesData.xAxis,
 				},
 				yAxis: {
 					type: 'value',
@@ -66,22 +96,24 @@ export default () => {
 				},
 				series: [
 					{
-						data: publishData.yAxis,
+						data: salesData.yAxis,
 						type: 'line',
 						smooth: true,
 					},
 				],
 			});
 		}
-	}, [publishData.xAxis, publishData.yAxis]);
+	}, [salesData.xAxis, salesData.yAxis]);
 
 	useEffect(() => {
-		if (Array.isArray(goodsData.xAxis) && goodsData.xAxis.length !== 0) {
-			const myChart = echarts.init(document.getElementById('goods'), echarts_theme);
+		if (Array.isArray(signupData.xAxis) && signupData.xAxis.length !== 0) {
+			let myChart = '';
+			myChart = echarts.getInstanceByDom(document.getElementById('signup'));
+			if (!myChart) myChart = echarts.init(document.getElementById('signup'), echarts_theme);
 			myChart.setOption({
 				xAxis: {
 					type: 'category',
-					data: goodsData.xAxis,
+					data: signupData.xAxis,
 				},
 				yAxis: {
 					type: 'value',
@@ -91,22 +123,24 @@ export default () => {
 				},
 				series: [
 					{
-						data: goodsData.yAxis,
+						data: signupData.yAxis,
 						type: 'line',
 						smooth: true,
 					},
 				],
 			});
 		}
-	}, [goodsData.xAxis, goodsData.yAxis]);
+	}, [signupData.xAxis, signupData.yAxis]);
 
 	useEffect(() => {
-		if (Array.isArray(commentsData.xAxis) && commentsData.xAxis.length !== 0) {
-			const myChart = echarts.init(document.getElementById('comments'), echarts_theme);
+		if (Array.isArray(teamData.xAxis) && teamData.xAxis.length !== 0) {
+			let myChart = '';
+			myChart = echarts.getInstanceByDom(document.getElementById('team'));
+			if (!myChart) myChart = echarts.init(document.getElementById('team'), echarts_theme);
 			myChart.setOption({
 				xAxis: {
 					type: 'category',
-					data: commentsData.xAxis,
+					data: teamData.xAxis,
 				},
 				yAxis: {
 					type: 'value',
@@ -116,59 +150,123 @@ export default () => {
 				},
 				series: [
 					{
-						data: commentsData.yAxis,
+						data: teamData.yAxis,
 						type: 'line',
 						smooth: true,
 					},
 				],
 			});
 		}
-	}, [commentsData.xAxis, commentsData.yAxis]);
+	}, [teamData.xAxis, teamData.yAxis]);
+
+	const onChangeUserTime = (value, mode, key) => {
+		switch (key) {
+			case 'user':
+				// 获取用户增长曲线
+				dispatch(action.getUserNumDataFunc({ startTime: mode[0], endTime: mode[1] }));
+				break;
+			case 'money':
+				// 获取用户增长曲线
+				dispatch(action.getSalesNumDataFunc({ startTime: mode[0], endTime: mode[1] }));
+				break;
+			case 'signup':
+				// 获取用户增长曲线
+				dispatch(action.getSignupDataFunc({ startTime: mode[0], endTime: mode[1] }));
+				break;
+			case 'team':
+				// 获取用户增长曲线
+				dispatch(action.getTeamDataFunc({ startTime: mode[0], endTime: mode[1] }));
+				break;
+			default:
+				break;
+		}
+	};
 
 	return (
 		<div className={styles.data}>
 			<div className={styles.title}>
-				<TitleChunk title="用户" num={totalData.user_total} desc={`今日新增: ${totalData.user_today}`} />
-				<TitleChunk title="发布" num={totalData.publish_total} desc={`今日新增: ${totalData.publish_today}`} />
-				<TitleChunk title="点赞" num={totalData.goods_total} desc={`今日新增: ${totalData.goods_today}`} />
-				<TitleChunk title="评论" num={totalData.comment_total} desc={`今日新增: ${totalData.comment_today}`} />
-				<TitleChunk title="转发" num={totalData.share_total} desc={`今日新增: ${totalData.share_today}`} />
-				<TitleChunk title="在线人数" num={totalData.online_num} desc={totalData.create_time} />
+				<TitleChunk
+					title="用户总数"
+					num={statisticsData.totalUsers}
+					desc={`今日新增: ${statisticsData.todayUsers}`}
+				/>
+				<TitleChunk
+					title="报名总数"
+					num={statisticsData.totalSignup}
+					desc={`今日新增: ${statisticsData.todaySignup}`}
+				/>
+				<TitleChunk
+					title="组团总数"
+					num={statisticsData.totalTeams}
+					desc={`今日新增: ${statisticsData.todayTeams}`}
+				/>
+				<TitleChunk
+					title="总收入"
+					num={statisticsData.totalMoney}
+					desc={`今日新增: ${statisticsData.todayMoney}`}
+				/>
 			</div>
 			<div className={styles.content}>
 				<div className={styles.con_row}>
 					<div className={styles.con_chunk}>
-						<Card title="用户">
+						<Card
+							title="用户"
+							extra={
+								<RangePicker
+									defaultValue={defaultTime}
+									onCalendarChange={(value, mode) => onChangeUserTime(value, mode, 'user')}
+								/>
+							}
+						>
 							<div className={styles.charts_con}>
 								<div id="member" className={styles.charts} />
-								{/* <div className={styles.charts_desc}>
-									<Badge status="success" text="微信：234" />
-									<Badge status="success" text="QQ：234" />
-									<Badge status="success" text="其他：234" />
-								</div> */}
 							</div>
 						</Card>
 					</div>
 					<div className={styles.con_chunk}>
-						<Card title="发布">
+						<Card
+							title="收入"
+							extra={
+								<RangePicker
+									defaultValue={defaultTime}
+									onCalendarChange={(value, mode) => onChangeUserTime(value, mode, 'money')}
+								/>
+							}
+						>
 							<div className={styles.charts_con}>
-								<div id="publish" className={styles.charts} />
+								<div id="sales" className={styles.charts} />
 							</div>
 						</Card>
 					</div>
 				</div>
 				<div className={styles.con_row}>
 					<div className={styles.con_chunk}>
-						<Card title="点赞">
+						<Card
+							title="报名人数"
+							extra={
+								<RangePicker
+									defaultValue={defaultTime}
+									onCalendarChange={(value, mode) => onChangeUserTime(value, mode, 'signup')}
+								/>
+							}
+						>
 							<div className={styles.charts_con}>
-								<div id="goods" className={styles.charts} />
+								<div id="signup" className={styles.charts} />
 							</div>
 						</Card>
 					</div>
 					<div className={styles.con_chunk}>
-						<Card title="评论">
+						<Card
+							title="组团人数"
+							extra={
+								<RangePicker
+									defaultValue={defaultTime}
+									onCalendarChange={(value, mode) => onChangeUserTime(value, mode, 'team')}
+								/>
+							}
+						>
 							<div className={styles.charts_con}>
-								<div id="comments" className={styles.charts} />
+								<div id="team" className={styles.charts} />
 							</div>
 						</Card>
 					</div>

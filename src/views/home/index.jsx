@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Spin } from 'antd';
 import router from '@router/router';
 import Menu from '@menu/index';
@@ -27,6 +27,7 @@ export default () => (
 							{router.contentRouter.map((item) => (
 								<Route key={item.key} path={item.path} component={lazy(item.components)} />
 							))}
+							<Redirect key="root" to={{ pathname: '/home/data' }} />
 						</Switch>
 					</HashRouter>
 				</Suspense>

@@ -88,7 +88,7 @@ module.exports = (mode) => {
 					use: [...commonLessLoad],
 				},
 				{
-					test: /\.(png|jpg|gif)$/,
+					test: /\.(png|jpe?g|gif)$/,
 					exclude: /(node_modules|bower_components)/,
 					use: {
 						loader: 'file-loader',

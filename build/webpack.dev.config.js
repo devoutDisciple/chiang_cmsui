@@ -2,7 +2,7 @@ const path = require('path');
 const webpackBaseConfig = require('./webpack.base.config');
 
 const webpackDevConfig = {
-	devtool: 'eval-cheap-module-source-map',
+	devtool: 'inline-source-map',
 	mode: 'development',
 	cache: true,
 
