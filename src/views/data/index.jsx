@@ -18,7 +18,6 @@ export default () => {
 	const { statisticsData, userData, salesData, signupData, teamData } = useSelector((state) => state.data);
 
 	useEffect(() => {
-		console.log(defaultTime, 7382);
 		// 获取汇总数据
 		dispatch(action.getDataFunc());
 		// 获取用户增长曲线

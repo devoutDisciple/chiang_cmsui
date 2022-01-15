@@ -3,6 +3,7 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Spin } from 'antd';
 import router from '@router/router';
 import Menu from '@menu/index';
+import config from '@config/config';
 import styles from './index.less';
 import Header from './Header';
 import Footer from './Footer';
@@ -27,7 +28,7 @@ export default () => (
 							{router.contentRouter.map((item) => (
 								<Route key={item.key} path={item.path} component={lazy(item.components)} />
 							))}
-							<Redirect key="root" to={{ pathname: '/home/data' }} />
+							<Redirect key="root" to={{ pathname: config.redirectUrl }} />
 						</Switch>
 					</HashRouter>
 				</Suspense>

@@ -14,6 +14,7 @@ export const getUsersByPageFunc = (params) => (dispatch, getState) => {
 	const {
 		member: { condition },
 	} = getState();
+
 	params = { ...condition, ...params };
 	if (Array.isArray(params.date) && params.date.length !== 0) {
 		params.startTime = moment(params.date[0]).format('YYYY-MM-DD 00:00:00');

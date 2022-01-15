@@ -26,7 +26,7 @@ export default () => {
 
 	const submit = useCallback(async () => {
 		try {
-			const values = await validateFields(['username', 'phone', 'school', 'date']);
+			const values = await validateFields(['username', 'phone', 'date']);
 			dispatch(action.getUsersByPageFunc(values));
 		} catch (error) {
 			console.log(error);
@@ -54,11 +54,6 @@ export default () => {
 				</Col>
 				<Col {...colLayout}>
 					<FormItem name="phone" label="手机号">
-						<Input placeholder="请输入" />
-					</FormItem>
-				</Col>
-				<Col {...colLayout}>
-					<FormItem name="school" label="学校">
 						<Input placeholder="请输入" />
 					</FormItem>
 				</Col>

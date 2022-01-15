@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Spin, Table, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { filterIdentity } from '@utils/filter';
 import Search from './Search';
 import './redux/reducer';
 import * as action from './redux/action';
@@ -14,6 +13,8 @@ export default () => {
 		loading,
 	} = useSelector((state) => state.member);
 	const dispatch = useDispatch();
+
+	useEffect(() => {});
 
 	const columns = [
 		{
@@ -32,53 +33,7 @@ export default () => {
 			dataIndex: 'phone',
 			key: 'phone',
 		},
-		{
-			title: '认证',
-			dataIndex: 'identity',
-			key: 'identity',
-			render: (txt) => <span>{filterIdentity(txt)}</span>,
-		},
-		{
-			title: '性别',
-			dataIndex: 'sex',
-			key: 'sex',
-			render: (txt) => <span>{txt === 1 ? '男' : '女'}</span>,
-		},
-		{
-			title: '地址',
-			dataIndex: 'address',
-			key: 'address',
-		},
-		{
-			title: '学校',
-			dataIndex: 'school',
-			key: 'school',
-		},
-		{
-			title: '年级',
-			dataIndex: 'level',
-			key: 'level',
-		},
-		{
-			title: '点赞数量',
-			dataIndex: 'goods',
-			key: 'goods',
-		},
-		{
-			title: '粉丝数量',
-			dataIndex: 'fans',
-			key: 'fans',
-		},
-		{
-			title: '关注人数',
-			dataIndex: 'publish',
-			key: 'publish',
-		},
-		{
-			title: '积分',
-			dataIndex: 'integral',
-			key: 'integral',
-		},
+
 		{
 			title: '注册时间',
 			dataIndex: 'create_time',
@@ -88,16 +43,16 @@ export default () => {
 			title: '操作',
 			dataIndex: 'operation',
 			key: 'operation',
-			render: (txt, record) => (
+			render: () => (
 				<>
 					<Button onClick={() => {}} type="link">
-						评论记录
+						支付记录
 					</Button>
 					<Button onClick={() => {}} type="link">
-						点赞记录
+						报名课程
 					</Button>
 					<Button onClick={() => {}} type="link">
-						发布记录
+						组团课程
 					</Button>
 				</>
 			),
