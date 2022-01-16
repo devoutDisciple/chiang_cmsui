@@ -111,6 +111,7 @@ module.exports = (mode) => {
 				'@store': path.resolve(__dirname, '../src/store'),
 				'@asserts': path.resolve(__dirname, '../src/asserts'),
 				'@router': path.resolve(__dirname, '../src/router'),
+				'@constant': path.resolve(__dirname, '../src/constant'),
 			},
 		},
 		plugins: [

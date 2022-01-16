@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Spin, Table, Button, Popconfirm } from 'antd';
+import { Spin, Table, Popconfirm, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import Search from './Search';
+import Dialog from './dialog';
 import './redux/reducer';
 import * as action from './redux/action';
-import Dialog from './dialog';
 import styles from './index.less';
 
 export default () => {
@@ -12,51 +12,36 @@ export default () => {
 		data: { count, list },
 		condition: { current },
 		loading,
-	} = useSelector((state) => state.plate);
+	} = useSelector((state) => state.feedback);
 	const dispatch = useDispatch();
 	const [visible, setVisible] = useState(false);
-	const [editData, setEditData] = useState({});
-	const [modalStatus, setModalStatus] = useState('new');
-
-	const onSearch = () => {
-		dispatch(action.getPlatesByPageFunc({}));
-	};
+	const [typeid, setTypeid] = useState(1);
 
 	const controllerDialog = () => setVisible(!visible);
 
-	// 删除模块
-	const deleteRecord = (record) => {
-		dispatch(action.deletePlateByIdFunc({ plate_id: record.id }, onSearch));
+	const onSearch = () => {
+		dispatch(action.getProjectByType({}));
 	};
 
-	const editRecord = (record) => {
-		console.log(record);
-		setEditData(record);
-		setModalStatus('edit');
-		controllerDialog();
+	const deleteRecord = (record) => {
+		console.log(record, 11);
+		dispatch(action.deleteRecordFunc({ id: record.id }, onSearch));
+	};
+
+	const pageChange = (page) => {
+		dispatch(action.getProjectByType({ current: page }));
 	};
 
 	const columns = [
 		{
-			title: '模块名称',
+			title: '课程类别',
 			dataIndex: 'name',
 			key: 'name',
-		},
-		{
-			title: '模块图片',
-			dataIndex: 'url',
-			key: 'url',
-			render: (txt) => <img alt="加载失败" className={styles.table_img} src={txt} />,
 		},
 		{
 			title: '权重',
 			dataIndex: 'sort',
 			key: 'sort',
-		},
-		{
-			title: '热度',
-			dataIndex: 'hot',
-			key: 'hot',
 		},
 		{
 			title: '操作',
@@ -73,22 +58,14 @@ export default () => {
 					>
 						<Button type="link">删除</Button>
 					</Popconfirm>
-
-					<Button onClick={() => editRecord(record)} type="link">
-						编辑
-					</Button>
 				</span>
 			),
 		},
 	];
-	const pageChange = (page) => {
-		dispatch(action.getPlatesByPageFunc({ current: page }));
-	};
-
 	return (
 		<div className={styles.wrap}>
 			<Spin spinning={loading}>
-				<Search controllerDialog={controllerDialog} setModalStatus={setModalStatus} />
+				<Search controllerDialog={controllerDialog} setTypeid={setTypeid} />
 				<div className={styles.table}>
 					<Table
 						rowKey="id"
@@ -104,14 +81,7 @@ export default () => {
 					/>
 				</div>
 			</Spin>
-			{visible && (
-				<Dialog
-					onSearch={onSearch}
-					editData={editData}
-					status={modalStatus}
-					controllerDialog={controllerDialog}
-				/>
-			)}
+			{visible && <Dialog typeid={typeid} onSearch={onSearch} controllerDialog={controllerDialog} />}
 		</div>
 	);
 };

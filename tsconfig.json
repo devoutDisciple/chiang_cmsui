@@ -30,7 +30,9 @@
         "@router": ["src/router"],
         "@router/*": ["src/router/*"],
         "@store": ["src/store"],
-        "@store/*": ["src/store/*"]
+        "@store/*": ["src/store/*"],
+        "@constant": ["src/constant"],
+        "@constant/*": ["src/constant/*"]
       }
     }
   }

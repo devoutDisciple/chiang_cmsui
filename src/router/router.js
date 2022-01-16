@@ -22,6 +22,15 @@ const contentRouter = [
 		showMenu: true,
 		components: () => import('@views/data/index'),
 	},
+
+	{
+		key: 'swiper',
+		name: '轮播图',
+		path: '/home/swiper',
+		icon: '',
+		showMenu: true,
+		components: () => import('@views/swiper/index'),
+	},
 	{
 		key: 'user',
 		name: '用户管理',
@@ -31,12 +40,12 @@ const contentRouter = [
 		components: () => import('@views/user/index'),
 	},
 	{
-		key: 'plate',
-		name: '板块管理',
-		path: '/home/plate',
+		key: 'type',
+		name: '课程类别管理',
+		path: '/home/type',
 		icon: '',
 		showMenu: true,
-		components: () => import('@views/plate/index'),
+		components: () => import('@views/type/index'),
 	},
 	{
 		key: 'circle',

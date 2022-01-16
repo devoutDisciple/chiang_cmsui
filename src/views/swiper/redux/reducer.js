@@ -9,11 +9,11 @@ const initState = {
 	condition: { current: 1 },
 };
 
-const plate = (state = initState, action) => {
+const swiper = (state = initState, action) => {
 	switch (action.type) {
-		case 'plate/setLoading':
+		case 'swiper/setLoading':
 			return { ...state, loading: action.payload };
-		case 'plate/setTableData':
+		case 'swiper/setTableData':
 			return {
 				...state,
 				data: action.payload.result,
@@ -26,4 +26,4 @@ const plate = (state = initState, action) => {
 	return state;
 };
 
-export default addReduce({ plate });
+export default addReduce({ swiper });

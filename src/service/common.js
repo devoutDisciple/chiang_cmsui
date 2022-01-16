@@ -1,17 +1,14 @@
 import request from '@utils/AxiosRequest';
 
-// 分页获取用户数据
-export const getPlatesByPage = (params) => request.get('/plate/platesByPage', params);
+export const getSwipersByPage = (params) => request.get('/swiper/all', params);
 
-export const deletePlateById = (params) => request.post('/plate/deleteById', params);
+export const deleteSwiperById = (params) => request.post('/swiper/deleteById', params);
 
-export const addPlate = (params) => request.post('/plate/add', params);
+export const addSwiper = (params) => request.post('/swiper/add', params);
 
-export const editPlate = (params) => request.post('/plate/edit', params);
+export const editSwiper = (params) => request.post('/swiper/edit', params);
 
 export const getCircleByPage = (params) => request.get('/circle/circlesByPage', params);
-
-export const getAllPlates = (params) => request.get('/plate/allPlates', params);
 
 export const getAddressList = (params) => request.get('/address/all', params);
 
@@ -29,4 +26,8 @@ export const getAllTopics = (params) => request.get('/topic/allByCircleId', para
 
 export const deleteTopic = (params) => request.post('/topic/delete', params);
 
-export const getAllFeedback = (params) => request.get('/feedback/all', params);
+export const getAllProjectByTypeId = (params) => request.get('/project/allProjectByTypeId', params);
+
+export const addProject = (params) => request.post('/project/add', params);
+
+export const deleteProject = (params) => request.post('/project/deleteById', params);
