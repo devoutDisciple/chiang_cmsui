@@ -7,19 +7,14 @@ const initState = {
 		list: [],
 	},
 	condition: { current: 1 },
-	circles: [],
 	projectList: [],
+	projectListSelect: [],
 };
 
 const subject = (state = initState, action) => {
 	switch (action.type) {
 		case 'subject/setLoading':
 			return { ...state, loading: action.payload };
-		case 'subject/setAllCircle':
-			return {
-				...state,
-				circles: action.payload,
-			};
 		case 'subject/setTableData':
 			return {
 				...state,
@@ -30,6 +25,11 @@ const subject = (state = initState, action) => {
 			return {
 				...state,
 				projectList: action.payload,
+			};
+		case 'subject/setPorjectListSelect':
+			return {
+				...state,
+				projectListSelect: action.payload,
 			};
 		case 'subject/addressList':
 			return {

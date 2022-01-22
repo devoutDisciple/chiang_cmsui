@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { Spin, Table, Button, Popconfirm, message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { filterContentTypeByTxt } from '@utils/filter';
+// import { filterContentTypeByTxt } from '@utils/filter';
 import request from '@utils/AxiosRequest';
-// import DetailDialog from '@component/subjectDetail/index';
-import GoodsRecord from '@component/goods/index';
+import DetailDialog from './detailDialog';
+import AddDialog from './addDialog';
 import Search from './Search';
 import './redux/reducer';
 import * as action from './redux/action';
@@ -19,27 +19,71 @@ export default () => {
 		loading,
 	} = useSelector((state) => state.subject);
 	const dispatch = useDispatch();
+	const [detailId, setDetailId] = useState('');
+	const [editData, setEditData] = useState({});
+	const [addDialogVisible, setAddDialogVisible] = useState(false);
 	const [detailDialogVisible, setDetailDialogVisible] = useState(false);
-	const [goodsVisible, setGoodsVisible] = useState(false);
-	const [subjectGoodsId, setContentGoodsId] = useState('');
-	const [subjectDetailId, setContentDetailId] = useState('');
 
 	const onSearch = () => {
 		dispatch(action.getSubjectsByPageFunc({}));
 	};
 
-	const controllerDetailDialog = () => setDetailDialogVisible(!detailDialogVisible);
-
 	// 删除内容
 	const deleteRecord = (record) => {
-		request.get('/subject/deleteById', { subjectId: record.id }).then(() => {
+		request.post('/subject/deleteById', { subjectId: record.id }).then(() => {
 			message.success('删除成功');
 			onSearch();
 		});
 	};
 
-	const controllerGoodsDialog = () => {
-		setGoodsVisible(!goodsVisible);
+	const controllerDetailDialog = () => setDetailDialogVisible(!detailDialogVisible);
+
+	const modifyFile = (data) => {
+		const result = [];
+		if (data && Array.isArray(data)) {
+			data.forEach((item) => {
+				const uuid = item.split('subject/')[1];
+				result.push({
+					uid: uuid,
+					name: uuid,
+					status: 'done',
+					url: item,
+				});
+			});
+		}
+		return result;
+	};
+
+	const onSearchDetail = async (id) => {
+		// const res = await request.get('/subject/detailById', { id: detailId });
+		const res = await request.get('/subject/detailById', { id });
+		const { detail_urls, signup_urls, teacher_urls, url } = res.data;
+		if (url) {
+			res.data.url = [
+				{
+					uid: '-1',
+					name: 'image.png',
+					status: 'done',
+					url,
+				},
+			];
+		}
+		res.data.detail_urls = modifyFile(detail_urls);
+		res.data.signup_urls = modifyFile(signup_urls);
+		res.data.teacher_urls = modifyFile(teacher_urls);
+		setEditData(res.data);
+		setTimeout(() => {
+			controllerDetailDialog();
+		}, 100);
+	};
+
+	const onClickDetail = (record) => {
+		setDetailId(record.id);
+		onSearchDetail(record.id);
+	};
+
+	const controllerAddDialog = () => {
+		setAddDialogVisible(!addDialogVisible);
 	};
 
 	const columns = [
@@ -59,22 +103,17 @@ export default () => {
 			key: 'title',
 		},
 		{
-			title: '详情图片',
-			dataIndex: 'url',
-			key: 'url',
-		},
-		{
-			title: '总价',
+			title: '总价(元)',
 			dataIndex: 'price',
 			key: 'price',
 		},
 		{
-			title: '报名价格',
+			title: '报名价格（元）',
 			dataIndex: 'apply_price',
 			key: 'apply_price',
 		},
 		{
-			title: '组团价格',
+			title: '组团价格（元）',
 			dataIndex: 'cluster_price',
 			key: 'cluster_price',
 		},
@@ -99,14 +138,19 @@ export default () => {
 			key: 'limit_num',
 		},
 		{
-			title: '课程状态',
-			dataIndex: 'state',
-			key: 'state',
-		},
-		{
 			title: '权重',
 			dataIndex: 'sort',
 			key: 'sort',
+		},
+		{
+			title: '课程周期',
+			dataIndex: 'time',
+			key: 'time',
+			render: (txt, record) => (
+				<span>
+					{record.start_time}-{record.end_time}
+				</span>
+			),
 		},
 		{
 			title: '操作',
@@ -114,6 +158,9 @@ export default () => {
 			key: 'operation',
 			render: (txt, record) => (
 				<span>
+					<Button onClick={() => onClickDetail(record)} type="link">
+						编辑详情
+					</Button>
 					<Popconfirm
 						placement="top"
 						title="是否确认删除"
@@ -123,15 +170,6 @@ export default () => {
 					>
 						<Button type="link">删除</Button>
 					</Popconfirm>
-					<Button
-						onClick={() => {
-							controllerDetailDialog();
-							setContentDetailId(record.id);
-						}}
-						type="link"
-					>
-						详情
-					</Button>
 				</span>
 			),
 		},
@@ -144,7 +182,7 @@ export default () => {
 	return (
 		<div className={styles.wrap}>
 			<Spin spinning={loading}>
-				<Search />
+				<Search controllerAddDialog={controllerAddDialog} />
 				<div className={styles.table}>
 					<Table
 						rowKey="id"
@@ -160,8 +198,16 @@ export default () => {
 					/>
 				</div>
 			</Spin>
-			{goodsVisible && (
-				<GoodsRecord subjectId={subjectGoodsId} type={1} controllerDialog={controllerGoodsDialog} />
+			{addDialogVisible && (
+				<AddDialog onSearch={onSearch} controllerDialog={controllerAddDialog} status="new" editData={{}} />
+			)}
+			{detailDialogVisible && (
+				<DetailDialog
+					editData={editData}
+					detailId={detailId}
+					controllerDialog={controllerDetailDialog}
+					onSearch={onSearch}
+				/>
 			)}
 		</div>
 	);

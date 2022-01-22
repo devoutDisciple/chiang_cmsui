@@ -20,7 +20,7 @@ const formLayout = {
 	wrapperCol: { span: 18 },
 };
 
-export default () => {
+export default ({ controllerAddDialog }) => {
 	const [form] = Form.useForm();
 	const { projectList } = useSelector((state) => state.subject);
 	const dispatch = useDispatch();
@@ -80,6 +80,9 @@ export default () => {
 				<Col {...colLayout} className={styles.search_btn}>
 					<Button onClick={submit} type="primary">
 						查询
+					</Button>
+					<Button onClick={controllerAddDialog} type="primary">
+						新增
 					</Button>
 				</Col>
 			</Form>

@@ -12,7 +12,7 @@ export const getCircleByPage = (params) => request.get('/circle/circlesByPage', 
 
 export const getAddressList = (params) => request.get('/address/all', params);
 
-export const addCircle = (params) => request.post('/circle/add', params);
+export const addSubject = (params) => request.post('/subject/add', params);
 
 export const deleteCircle = (params) => request.post('/circle/delete', params);
 

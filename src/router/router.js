@@ -55,30 +55,6 @@ const contentRouter = [
 		showMenu: true,
 		components: () => import('@views/subject/index'),
 	},
-	{
-		key: 'cabinet',
-		name: '内容管理',
-		path: '/home/content',
-		icon: '',
-		showMenu: true,
-		components: () => import('@views/content/index'),
-	},
-	{
-		key: 'shop',
-		name: '区域管理',
-		path: '/home/area',
-		icon: '',
-		showMenu: true,
-		components: () => import('@views/address/index'),
-	},
-	{
-		key: 'opinion',
-		name: '意见和反馈',
-		path: '/home/opinion',
-		icon: '',
-		showMenu: true,
-		components: () => import('@views/opinion/index'),
-	},
 ];
 
 export default { rootRouter, contentRouter };

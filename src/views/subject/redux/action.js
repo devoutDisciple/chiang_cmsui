@@ -1,11 +1,4 @@
-import {
-	getAllCircles,
-	getSubjectsByPage,
-	addCircle,
-	editCircle,
-	getAllPorjectByType,
-	getAddressList,
-} from '@service/common';
+import { getSubjectsByPage, addSubject, editCircle, getAllPorjectByType, getAddressList } from '@service/common';
 import moment from 'moment';
 import { message } from 'antd';
 // 设置loading
@@ -14,19 +7,6 @@ const setLoading = (flag, dispatch) => {
 		type: 'subject/setLoading',
 		payload: flag,
 	});
-};
-
-// 获取所有圈子
-export const getCirclesAll = () => (dispatch) => {
-	setLoading(true, dispatch);
-	getAllCircles()
-		.then((res) => {
-			dispatch({
-				type: 'subject/setAllCircle',
-				payload: res.data,
-			});
-		})
-		.finally(() => setLoading(false, dispatch));
 };
 
 // 分页获取数据
@@ -51,7 +31,7 @@ export const getSubjectsByPageFunc = (params) => (dispatch, getState) => {
 		.finally(() => setLoading(false, dispatch));
 };
 
-// 查询模块信息
+// 查询课程类别信息
 export const getProjectByType = (params) => (dispatch) => {
 	setLoading(true, dispatch);
 	getAllPorjectByType(params)
@@ -60,6 +40,30 @@ export const getProjectByType = (params) => (dispatch) => {
 				type: 'subject/setPorjectList',
 				payload: res.data,
 			});
+		})
+		.finally(() => setLoading(false, dispatch));
+};
+
+// 查询课程类别信息（下拉框）
+export const getProjectByTypeBySelect = (params) => (dispatch) => {
+	setLoading(true, dispatch);
+	getAllPorjectByType(params)
+		.then((res) => {
+			dispatch({
+				type: 'subject/setPorjectListSelect',
+				payload: res.data,
+			});
+		})
+		.finally(() => setLoading(false, dispatch));
+};
+
+// 嫌憎课程
+export const addSubjectFunc = (params, onSearch, controllerDialog) => (dispatch) => {
+	addSubject(params)
+		.then(() => {
+			message.success('新增成功');
+			onSearch();
+			controllerDialog();
 		})
 		.finally(() => setLoading(false, dispatch));
 };
@@ -73,17 +77,6 @@ export const getAddressListFunc = () => (dispatch) => {
 				type: 'subject/addressList',
 				payload: res.data,
 			});
-		})
-		.finally(() => setLoading(false, dispatch));
-};
-
-// 新增圈子
-export const addCircleFunc = (params, onSearch, controllerDialog) => (dispatch) => {
-	addCircle(params)
-		.then(() => {
-			message.success('新增成功');
-			onSearch();
-			controllerDialog();
 		})
 		.finally(() => setLoading(false, dispatch));
 };
