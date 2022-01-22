@@ -48,12 +48,12 @@ const contentRouter = [
 		components: () => import('@views/type/index'),
 	},
 	{
-		key: 'circle',
-		name: '圈子管理',
-		path: '/home/circle',
+		key: 'subject',
+		name: '课程管理',
+		path: '/home/subject',
 		icon: '',
 		showMenu: true,
-		components: () => import('@views/circle/index'),
+		components: () => import('@views/subject/index'),
 	},
 	{
 		key: 'cabinet',

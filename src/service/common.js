@@ -20,9 +20,9 @@ export const editCircle = (params) => request.post('/circle/edit', params);
 
 export const getAllCircles = (params) => request.get('/circle/circlesDetail', params);
 
-export const getContentsByPage = (params) => request.get('/content/contentsByPage', params);
+export const getSubjectsByPage = (params) => request.get('/subject/allByContions', params);
 
-export const getAllTopics = (params) => request.get('/topic/allByCircleId', params);
+export const getAllPorjectByType = (params) => request.get('/project/allPorjectByType', params);
 
 export const deleteTopic = (params) => request.post('/topic/delete', params);
 

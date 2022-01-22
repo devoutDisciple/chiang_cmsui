@@ -5,7 +5,7 @@ import { Spin, Table, Button, Popconfirm, message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { filterContentTypeByTxt } from '@utils/filter';
 import request from '@utils/AxiosRequest';
-import DetailDialog from '@component/contentDetail/index';
+// import DetailDialog from '@component/subjectDetail/index';
 import GoodsRecord from '@component/goods/index';
 import Search from './Search';
 import './redux/reducer';
@@ -17,22 +17,22 @@ export default () => {
 		data: { count, list },
 		condition: { current },
 		loading,
-	} = useSelector((state) => state.content);
+	} = useSelector((state) => state.subject);
 	const dispatch = useDispatch();
 	const [detailDialogVisible, setDetailDialogVisible] = useState(false);
 	const [goodsVisible, setGoodsVisible] = useState(false);
-	const [contentGoodsId, setContentGoodsId] = useState('');
-	const [contentDetailId, setContentDetailId] = useState('');
+	const [subjectGoodsId, setContentGoodsId] = useState('');
+	const [subjectDetailId, setContentDetailId] = useState('');
 
 	const onSearch = () => {
-		dispatch(action.getContentsByPageFunc({}));
+		dispatch(action.getSubjectsByPageFunc({}));
 	};
 
 	const controllerDetailDialog = () => setDetailDialogVisible(!detailDialogVisible);
 
 	// 删除内容
 	const deleteRecord = (record) => {
-		request.get('/content/deleteById', { contentId: record.id }).then(() => {
+		request.get('/subject/deleteById', { subjectId: record.id }).then(() => {
 			message.success('删除成功');
 			onSearch();
 		});
@@ -42,72 +42,71 @@ export default () => {
 		setGoodsVisible(!goodsVisible);
 	};
 
-	// 查询点赞记录
-	const onSearchGoods = (record) => {
-		setContentGoodsId(record.id);
-		controllerGoodsDialog();
-	};
-
 	const columns = [
 		{
-			title: '发布人',
-			dataIndex: 'username',
-			key: 'username',
-		},
-		{
-			title: '发布圈子',
-			dataIndex: 'circle_names',
-			key: 'circle_names',
-			render: (txt) => {
-				const fields = JSON.parse(txt).join(',');
-				return <span>{fields}</span>;
-			},
-		},
-		{
-			title: '包含话题',
-			dataIndex: 'topic_names',
-			key: 'topic_names',
-			render: (txt) => {
-				const fields = JSON.parse(txt).join(',');
-				return <span>{fields || '--'}</span>;
-			},
-		},
-		{
-			title: '发布类型',
+			title: '所属项目',
 			dataIndex: 'type',
 			key: 'type',
-			render: (txt) => <span>{filterContentTypeByTxt(txt)}</span>,
-		},
-
-		{
-			title: '点赞',
-			dataIndex: 'goods',
-			key: 'goods',
-			render: (txt, record) => (
-				<span className={styles.detail_num} onClick={() => onSearchGoods(record)}>
-					{txt || 0}
-				</span>
-			),
 		},
 		{
-			title: '评论',
-			dataIndex: 'comment',
-			key: 'comment',
+			title: '课程类别',
+			dataIndex: 'project_id',
+			key: 'project_id',
 		},
 		{
-			title: '转发',
-			dataIndex: 'share',
-			key: 'share',
+			title: '标题',
+			dataIndex: 'title',
+			key: 'title',
 		},
 		{
-			title: '热度',
-			dataIndex: 'hot',
-			key: 'hot',
+			title: '详情图片',
+			dataIndex: 'url',
+			key: 'url',
 		},
 		{
-			title: '发布时间',
-			dataIndex: 'create_time',
-			key: 'create_time',
+			title: '总价',
+			dataIndex: 'price',
+			key: 'price',
+		},
+		{
+			title: '报名价格',
+			dataIndex: 'apply_price',
+			key: 'apply_price',
+		},
+		{
+			title: '组团价格',
+			dataIndex: 'cluster_price',
+			key: 'cluster_price',
+		},
+		{
+			title: '总参与人数',
+			dataIndex: 'total_person',
+			key: 'total_person',
+		},
+		{
+			title: '报名人数',
+			dataIndex: 'apply_num',
+			key: 'apply_num',
+		},
+		{
+			title: '组团人数',
+			dataIndex: 'cluster_num',
+			key: 'cluster_num',
+		},
+		{
+			title: '限制人数',
+			dataIndex: 'limit_num',
+			key: 'limit_num',
+		},
+		{
+			title: '课程状态',
+			dataIndex: 'state',
+			key: 'state',
+		},
+		{
+			title: '权重',
+			dataIndex: 'sort',
+			key: 'sort',
 		},
 		{
 			title: '操作',
@@ -139,7 +138,7 @@ export default () => {
 	];
 
 	const pageChange = (page) => {
-		dispatch(action.getContentsByPageFunc({ current: page }));
+		dispatch(action.getSubjectsByPageFunc({ current: page }));
 	};
 
 	return (
@@ -161,11 +160,8 @@ export default () => {
 					/>
 				</div>
 			</Spin>
-			{detailDialogVisible && (
-				<DetailDialog contentId={contentDetailId} controllerDialog={controllerDetailDialog} />
-			)}
 			{goodsVisible && (
-				<GoodsRecord contentId={contentGoodsId} type={1} controllerDialog={controllerGoodsDialog} />
+				<GoodsRecord subjectId={subjectGoodsId} type={1} controllerDialog={controllerGoodsDialog} />
 			)}
 		</div>
 	);

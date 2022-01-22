@@ -1,10 +1,17 @@
-import { getAllCircles, getContentsByPage, addCircle, editCircle, getAllPlates, getAddressList } from '@service/common';
+import {
+	getAllCircles,
+	getSubjectsByPage,
+	addCircle,
+	editCircle,
+	getAllPorjectByType,
+	getAddressList,
+} from '@service/common';
 import moment from 'moment';
 import { message } from 'antd';
 // 设置loading
 const setLoading = (flag, dispatch) => {
 	dispatch({
-		type: 'content/setLoading',
+		type: 'subject/setLoading',
 		payload: flag,
 	});
 };
@@ -15,7 +22,7 @@ export const getCirclesAll = () => (dispatch) => {
 	getAllCircles()
 		.then((res) => {
 			dispatch({
-				type: 'content/setAllCircle',
+				type: 'subject/setAllCircle',
 				payload: res.data,
 			});
 		})
@@ -23,10 +30,10 @@ export const getCirclesAll = () => (dispatch) => {
 };
 
 // 分页获取数据
-export const getContentsByPageFunc = (params) => (dispatch, getState) => {
+export const getSubjectsByPageFunc = (params) => (dispatch, getState) => {
 	setLoading(true, dispatch);
 	const {
-		content: { condition },
+		subject: { condition },
 	} = getState();
 	if (Array.isArray(params.date) && params.date.length !== 0) {
 		params.startTime = moment(params.date[0]).format('YYYY-MM-DD 00:00:00');
@@ -34,10 +41,10 @@ export const getContentsByPageFunc = (params) => (dispatch, getState) => {
 		delete params.date;
 	}
 	params = { ...condition, ...params };
-	getContentsByPage(params)
+	getSubjectsByPage(params)
 		.then((res) => {
 			dispatch({
-				type: 'content/setTableData',
+				type: 'subject/setTableData',
 				payload: { result: res.data, condition: params },
 			});
 		})
@@ -45,12 +52,12 @@ export const getContentsByPageFunc = (params) => (dispatch, getState) => {
 };
 
 // 查询模块信息
-export const getPlateListFunc = () => (dispatch) => {
+export const getProjectByType = (params) => (dispatch) => {
 	setLoading(true, dispatch);
-	getAllPlates()
+	getAllPorjectByType(params)
 		.then((res) => {
 			dispatch({
-				type: 'content/setPlateList',
+				type: 'subject/setPorjectList',
 				payload: res.data,
 			});
 		})
@@ -63,7 +70,7 @@ export const getAddressListFunc = () => (dispatch) => {
 	getAddressList()
 		.then((res) => {
 			dispatch({
-				type: 'content/addressList',
+				type: 'subject/addressList',
 				payload: res.data,
 			});
 		})

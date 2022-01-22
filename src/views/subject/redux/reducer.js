@@ -8,29 +8,30 @@ const initState = {
 	},
 	condition: { current: 1 },
 	circles: [],
+	projectList: [],
 };
 
-const content = (state = initState, action) => {
+const subject = (state = initState, action) => {
 	switch (action.type) {
-		case 'content/setLoading':
+		case 'subject/setLoading':
 			return { ...state, loading: action.payload };
-		case 'content/setAllCircle':
+		case 'subject/setAllCircle':
 			return {
 				...state,
 				circles: action.payload,
 			};
-		case 'content/setTableData':
+		case 'subject/setTableData':
 			return {
 				...state,
 				data: action.payload.result,
 				condition: { ...state.condition, ...action.payload.condition },
 			};
-		case 'content/setPlateList':
+		case 'subject/setPorjectList':
 			return {
 				...state,
-				plateList: action.payload,
+				projectList: action.payload,
 			};
-		case 'content/addressList':
+		case 'subject/addressList':
 			return {
 				...state,
 				addressList: action.payload,
@@ -41,4 +42,4 @@ const content = (state = initState, action) => {
 	return state;
 };
 
-export default addReduce({ content });
+export default addReduce({ subject });
