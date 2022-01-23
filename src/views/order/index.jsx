@@ -69,6 +69,12 @@ export default () => {
 			render: (txt) => <span>{Number(txt) === 1 ? '报名' : '组团'}</span>,
 		},
 		{
+			title: '拼团人数',
+			dataIndex: 'team',
+			key: 'team',
+			render: (txt, record) => <span>{record.type === 2 ? record.teamDetail.num : 0}</span>,
+		},
+		{
 			title: '创建时间',
 			dataIndex: 'create_time',
 			key: 'create_time',

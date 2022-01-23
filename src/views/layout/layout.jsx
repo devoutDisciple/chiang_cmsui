@@ -11,7 +11,7 @@ export default () => {
 	useEffect(() => {
 		message.config({ top: 100, duration: 2, maxCount: 1 });
 		// 获取用户是否登录
-		// dispatch(getLoginFunc());
+		dispatch(getLoginFunc());
 	}, [dispatch]);
 
 	return (
