@@ -1,5 +1,7 @@
-import { getSubjectsByPage, addSubject, editCircle, getAllPorjectByType, getAddressList } from '@service/common';
+import { getSubjectsByPage, addSubject, editCircle, getAllPorjectByType } from '@service/common';
 import moment from 'moment';
+import { typeList } from '@constant/constant';
+
 import { message } from 'antd';
 // 设置loading
 const setLoading = (flag, dispatch) => {
@@ -21,8 +23,17 @@ export const getSubjectsByPageFunc = (params) => (dispatch, getState) => {
 		delete params.date;
 	}
 	params = { ...condition, ...params };
+	console.log(params, 8888);
 	getSubjectsByPage(params)
 		.then((res) => {
+			console.log(res.data.list, 238);
+			if (Array.isArray(res.data.list)) {
+				res.data.list.forEach((item) => {
+					const typeName = typeList.filter((type) => type.id === item.projectDetail.type_id)[0].name;
+					item.typeName = typeName;
+					item.projectName = item.projectDetail.name;
+				});
+			}
 			dispatch({
 				type: 'subject/setTableData',
 				payload: { result: res.data, condition: params },
@@ -64,19 +75,6 @@ export const addSubjectFunc = (params, onSearch, controllerDialog) => (dispatch)
 			message.success('新增成功');
 			onSearch();
 			controllerDialog();
-		})
-		.finally(() => setLoading(false, dispatch));
-};
-
-// 查询地址信息
-export const getAddressListFunc = () => (dispatch) => {
-	setLoading(true, dispatch);
-	getAddressList()
-		.then((res) => {
-			dispatch({
-				type: 'subject/addressList',
-				payload: res.data,
-			});
 		})
 		.finally(() => setLoading(false, dispatch));
 };

@@ -89,13 +89,13 @@ export default () => {
 	const columns = [
 		{
 			title: '所属项目',
-			dataIndex: 'type',
-			key: 'type',
+			dataIndex: 'typeName',
+			key: 'typeName',
 		},
 		{
 			title: '课程类别',
-			dataIndex: 'project_id',
-			key: 'project_id',
+			dataIndex: 'projectName',
+			key: 'projectName',
 		},
 		{
 			title: '标题',

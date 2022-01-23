@@ -55,6 +55,22 @@ const contentRouter = [
 		showMenu: true,
 		components: () => import('@views/subject/index'),
 	},
+	{
+		key: 'teacher',
+		name: '教师管理',
+		path: '/home/teacher',
+		icon: '',
+		showMenu: true,
+		components: () => import('@views/teacher/index'),
+	},
+	{
+		key: 'order',
+		name: '报名管理',
+		path: '/home/order',
+		icon: '',
+		showMenu: true,
+		components: () => import('@views/order/index'),
+	},
 ];
 
 export default { rootRouter, contentRouter };

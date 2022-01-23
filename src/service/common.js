@@ -8,19 +8,19 @@ export const addSwiper = (params) => request.post('/swiper/add', params);
 
 export const editSwiper = (params) => request.post('/swiper/edit', params);
 
-export const getCircleByPage = (params) => request.get('/circle/circlesByPage', params);
+export const getTeachersByPage = (params) => request.get('/teacher/allTeacher', params);
 
-export const getAddressList = (params) => request.get('/address/all', params);
+export const deleteTeacherById = (params) => request.post('/teacher/deleteById', params);
 
 export const addSubject = (params) => request.post('/subject/add', params);
 
-export const deleteCircle = (params) => request.post('/circle/delete', params);
+export const getOrdersByPage = (params) => request.get('/order/allByConditions', params);
 
 export const editCircle = (params) => request.post('/circle/edit', params);
 
 export const getAllCircles = (params) => request.get('/circle/circlesDetail', params);
 
-export const getSubjectsByPage = (params) => request.get('/subject/allByContions', params);
+export const getSubjectsByPage = (params) => request.get('/subject/allSubjectByContions', params);
 
 export const getAllPorjectByType = (params) => request.get('/project/allPorjectByType', params);
 
