@@ -35,9 +35,15 @@ export default ({ controllerAddDialog }) => {
 		}
 	}, [dispatch, validateFields]);
 
+	const getAllTeachers = () => {
+		dispatch(action.getAllTeachersFunc());
+	};
+
 	useEffect(() => {
 		// 查询
 		submit();
+		// 获取所有老师
+		getAllTeachers();
 	}, [dispatch, submit]);
 
 	const onSelectType = (data) => {

@@ -9,6 +9,7 @@ const initState = {
 	condition: { current: 1 },
 	projectList: [],
 	projectListSelect: [],
+	teacherList: [],
 };
 
 const subject = (state = initState, action) => {
@@ -25,6 +26,11 @@ const subject = (state = initState, action) => {
 			return {
 				...state,
 				projectList: action.payload,
+			};
+		case 'subject/setAllTeachers':
+			return {
+				...state,
+				teacherList: action.payload,
 			};
 		case 'subject/setPorjectListSelect':
 			return {

@@ -19,7 +19,7 @@ const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 export default ({ controllerDialog, onSearch, status, editData }) => {
 	const [form] = Form.useForm();
 	const dispatch = useDispatch();
-	const { projectListSelect } = useSelector((state) => state.subject);
+	const { projectListSelect, teacherList } = useSelector((state) => state.subject);
 	const { validateFields, setFieldsValue } = form;
 
 	const [state, setState] = useState({
@@ -61,6 +61,7 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 			'apply_price',
 			'cluster_price',
 			'limit_num',
+			'teacher_ids',
 			'time',
 		]);
 		values.start_time = moment(values.time[0]).format(timeFormat);
@@ -102,6 +103,27 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 				<Row className={styles.form_row}>
 					<FormItem name="price" label="总价" rules={[{ required: true }]}>
 						<InputNumber min={0} defaultValue={0} />
+					</FormItem>
+				</Row>
+				<Row className={styles.form_row}>
+					<FormItem name="teacher_ids" label="选择老师" rules={[{ required: true }]}>
+						<Select
+							mode="multiple"
+							style={{ width: '100%' }}
+							placeholder="选择老师"
+							optionLabelProp="label"
+							defaultOpen
+						>
+							{teacherList &&
+								teacherList.map((item) => (
+									<Option value={item.id} label={item.name}>
+										<div className={styles.teacherItem}>
+											<img src={item.photo} alt="加载中" />
+											{item.name}
+										</div>
+									</Option>
+								))}
+						</Select>
 					</FormItem>
 				</Row>
 				<Row className={styles.form_row}>

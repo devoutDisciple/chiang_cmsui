@@ -24,6 +24,8 @@ export const getSubjectsByPage = (params) => request.get('/subject/allSubjectByC
 
 export const getAllPorjectByType = (params) => request.get('/project/allPorjectByType', params);
 
+export const getAllTeachers = (params) => request.get('/teacher/allTeachers', params);
+
 export const deleteTopic = (params) => request.post('/topic/delete', params);
 
 export const getAllProjectByTypeId = (params) => request.get('/project/allProjectByTypeId', params);

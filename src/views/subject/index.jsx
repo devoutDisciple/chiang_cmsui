@@ -21,7 +21,7 @@ export default () => {
 	const dispatch = useDispatch();
 	const [detailId, setDetailId] = useState('');
 	const [editData, setEditData] = useState({});
-	const [addDialogVisible, setAddDialogVisible] = useState(false);
+	const [addDialogVisible, setAddDialogVisible] = useState(true);
 	const [detailDialogVisible, setDetailDialogVisible] = useState(false);
 
 	const onSearch = () => {
@@ -159,7 +159,10 @@ export default () => {
 			render: (txt, record) => (
 				<span>
 					<Button onClick={() => onClickDetail(record)} type="link">
-						编辑详情
+						编辑
+					</Button>
+					<Button onClick={() => onClickDetail(record)} type="link">
+						详情
 					</Button>
 					<Popconfirm
 						placement="top"

@@ -1,4 +1,4 @@
-import { getSubjectsByPage, addSubject, editCircle, getAllPorjectByType } from '@service/common';
+import { getSubjectsByPage, addSubject, editCircle, getAllPorjectByType, getAllTeachers } from '@service/common';
 import moment from 'moment';
 import { typeList } from '@constant/constant';
 
@@ -37,6 +37,19 @@ export const getSubjectsByPageFunc = (params) => (dispatch, getState) => {
 			dispatch({
 				type: 'subject/setTableData',
 				payload: { result: res.data, condition: params },
+			});
+		})
+		.finally(() => setLoading(false, dispatch));
+};
+
+// 获取所有老师
+export const getAllTeachersFunc = (params) => (dispatch) => {
+	setLoading(true, dispatch);
+	getAllTeachers(params)
+		.then((res) => {
+			dispatch({
+				type: 'subject/setAllTeachers',
+				payload: res.data,
 			});
 		})
 		.finally(() => setLoading(false, dispatch));
