@@ -1,4 +1,11 @@
-import { getSubjectsByPage, addSubject, editCircle, getAllPorjectByType, getAllTeachers } from '@service/common';
+import {
+	getSubjectsByPage,
+	addSubject,
+	editCircle,
+	getAllPorjectByType,
+	getAllTeachers,
+	editSubject,
+} from '@service/common';
 import moment from 'moment';
 import { typeList } from '@constant/constant';
 
@@ -23,14 +30,13 @@ export const getSubjectsByPageFunc = (params) => (dispatch, getState) => {
 		delete params.date;
 	}
 	params = { ...condition, ...params };
-	console.log(params, 8888);
 	getSubjectsByPage(params)
 		.then((res) => {
-			console.log(res.data.list, 238);
 			if (Array.isArray(res.data.list)) {
 				res.data.list.forEach((item) => {
-					const typeName = typeList.filter((type) => type.id === item.projectDetail.type_id)[0].name;
-					item.typeName = typeName;
+					const typeItem = typeList.filter((type) => type.id === item.projectDetail.type_id)[0];
+					item.typeid = typeItem.id;
+					item.typeName = typeItem.name;
 					item.projectName = item.projectDetail.name;
 				});
 			}
@@ -81,11 +87,22 @@ export const getProjectByTypeBySelect = (params) => (dispatch) => {
 		.finally(() => setLoading(false, dispatch));
 };
 
-// 嫌憎课程
+// 新增课程
 export const addSubjectFunc = (params, onSearch, controllerDialog) => (dispatch) => {
 	addSubject(params)
 		.then(() => {
 			message.success('新增成功');
+			onSearch();
+			controllerDialog();
+		})
+		.finally(() => setLoading(false, dispatch));
+};
+
+// 嫌憎课程
+export const eidtSubjectFunc = (params, onSearch, controllerDialog) => (dispatch) => {
+	editSubject(params)
+		.then(() => {
+			message.success('编辑成功');
 			onSearch();
 			controllerDialog();
 		})

@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { Spin, Table, Button, Popconfirm, message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-// import { filterContentTypeByTxt } from '@utils/filter';
 import request from '@utils/AxiosRequest';
+import TagDialog from './tagDialog';
+// import { filterContentTypeByTxt } from '@utils/filter';
 import DetailDialog from './detailDialog';
 import AddDialog from './addDialog';
 import Search from './Search';
@@ -19,9 +20,13 @@ export default () => {
 		loading,
 	} = useSelector((state) => state.subject);
 	const dispatch = useDispatch();
+	const [tagData, setTagData] = useState({});
 	const [detailId, setDetailId] = useState('');
 	const [editData, setEditData] = useState({});
-	const [addDialogVisible, setAddDialogVisible] = useState(true);
+	const [detailData, setDetailData] = useState({});
+	const [detailStatus, setDetailStatus] = useState('new');
+	const [tagDialogVisible, setTagDialogVisible] = useState(false);
+	const [addDialogVisible, setAddDialogVisible] = useState(false);
 	const [detailDialogVisible, setDetailDialogVisible] = useState(false);
 
 	const onSearch = () => {
@@ -82,8 +87,24 @@ export default () => {
 		onSearchDetail(record.id);
 	};
 
-	const controllerAddDialog = () => {
+	const onClickRecord = (record) => {
+		setDetailStatus('edit');
+		setDetailData(record);
 		setAddDialogVisible(!addDialogVisible);
+	};
+
+	const controllerAddDialog = () => {
+		setDetailStatus('new');
+		setAddDialogVisible(!addDialogVisible);
+	};
+
+	const controllerTagDialog = () => {
+		setTagDialogVisible(!tagDialogVisible);
+	};
+
+	const onClickTag = (record) => {
+		setTagData(record);
+		controllerTagDialog();
 	};
 
 	const columns = [
@@ -158,11 +179,14 @@ export default () => {
 			key: 'operation',
 			render: (txt, record) => (
 				<span>
-					<Button onClick={() => onClickDetail(record)} type="link">
+					<Button onClick={() => onClickRecord(record)} type="link">
 						编辑
 					</Button>
 					<Button onClick={() => onClickDetail(record)} type="link">
 						详情
+					</Button>
+					<Button onClick={() => onClickTag(record)} type="link">
+						标签
 					</Button>
 					<Popconfirm
 						placement="top"
@@ -202,7 +226,12 @@ export default () => {
 				</div>
 			</Spin>
 			{addDialogVisible && (
-				<AddDialog onSearch={onSearch} controllerDialog={controllerAddDialog} status="new" editData={{}} />
+				<AddDialog
+					onSearch={onSearch}
+					controllerDialog={controllerAddDialog}
+					status={detailStatus}
+					editData={detailData}
+				/>
 			)}
 			{detailDialogVisible && (
 				<DetailDialog
@@ -211,6 +240,10 @@ export default () => {
 					controllerDialog={controllerDetailDialog}
 					onSearch={onSearch}
 				/>
+			)}
+
+			{tagDialogVisible && (
+				<TagDialog data={tagData} onSearch={onSearch} controllerDialog={controllerTagDialog} />
 			)}
 		</div>
 	);

@@ -14,6 +14,8 @@ export const deleteTeacherById = (params) => request.post('/teacher/deleteById',
 
 export const addSubject = (params) => request.post('/subject/add', params);
 
+export const editSubject = (params) => request.post('/subject/edit', params);
+
 export const getOrdersByPage = (params) => request.get('/order/allByConditions', params);
 
 export const editCircle = (params) => request.post('/circle/edit', params);

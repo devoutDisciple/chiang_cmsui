@@ -15,6 +15,7 @@ const formLayout = {
 	wrapperCol: { span: 19 },
 };
 const timeFormat = 'YYYY-MM-DD HH:mm:ss';
+const dateFormat = 'YYYY-MM-DD';
 
 export default ({ controllerDialog, onSearch, status, editData }) => {
 	const [form] = Form.useForm();
@@ -38,12 +39,19 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 		} else {
 			setState({ title: '编辑课程', satus: 'edit' });
 			setFieldsValue({
-				name: editData.name,
-				plate_id: editData.plate_id,
-				address: [editData.province, editData.city, editData.country],
-				type: editData.type,
-				desc: editData.desc,
+				type: editData.typeid,
+				plate_id: editData.project_id,
+				title: editData.title,
+				price: editData.price,
+				apply_price: editData.apply_price,
+				cluster_price: editData.cluster_price,
+				limit_num: editData.limit_num,
+				teacher_ids: JSON.parse(editData.teacher_ids),
+				time: [moment(editData.start_time, dateFormat), moment(editData.end_time, dateFormat)],
 			});
+			setTimeout(() => {
+				setFieldsValue({ projectid: editData.project_id });
+			}, 1000);
 		}
 	}, [editData, setFieldsValue, status]);
 
@@ -67,7 +75,12 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 		values.start_time = moment(values.time[0]).format(timeFormat);
 		values.end_time = moment(values.time[1]).format(timeFormat);
 		delete values.time;
-		dispatch(action.addSubjectFunc(values, onSearch, controllerDialog));
+		if (status === 'new') {
+			dispatch(action.addSubjectFunc(values, onSearch, controllerDialog));
+		} else {
+			values.id = editData.id;
+			dispatch(action.eidtSubjectFunc(values, onSearch, controllerDialog));
+		}
 	};
 
 	return (
@@ -112,7 +125,6 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 							style={{ width: '100%' }}
 							placeholder="选择老师"
 							optionLabelProp="label"
-							defaultOpen
 						>
 							{teacherList &&
 								teacherList.map((item) => (

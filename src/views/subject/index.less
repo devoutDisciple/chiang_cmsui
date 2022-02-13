@@ -72,6 +72,7 @@
 
     .img {
         width: 100%;
+
         :global {
             .ant-row {
                 margin-bottom: 20px;
@@ -104,6 +105,29 @@
                 }
             }
         }
+    }
+
+    .tag_content {
+        width: 100%;
+
+        .tag {
+            padding: 5px 10px;
+            background: blue;
+            margin-right: 10px;
+            position: relative;
+            .tag_close {
+                position: absolute;
+                right: -8px;
+                top: -9px;
+                color: red;
+            }
+        }
+    }
+
+    .tag_btn {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
     }
 }
 
