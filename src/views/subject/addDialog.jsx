@@ -11,8 +11,8 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 const FormItem = Form.Item;
 const formLayout = {
-	labelCol: { span: 5 },
-	wrapperCol: { span: 19 },
+	labelCol: { span: 6 },
+	wrapperCol: { span: 18 },
 };
 const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 const dateFormat = 'YYYY-MM-DD';
@@ -49,11 +49,12 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 				teacher_ids: JSON.parse(editData.teacher_ids),
 				time: [moment(editData.start_time, dateFormat), moment(editData.end_time, dateFormat)],
 			});
+			dispatch(action.getProjectByTypeBySelect({ typeId: editData.typeid }));
 			setTimeout(() => {
 				setFieldsValue({ projectid: editData.project_id });
 			}, 1000);
 		}
-	}, [editData, setFieldsValue, status]);
+	}, [dispatch, editData, setFieldsValue, status]);
 
 	const selectType = (data) => {
 		dispatch(action.getProjectByTypeBySelect({ typeId: data }));
@@ -84,7 +85,14 @@ export default ({ controllerDialog, onSearch, status, editData }) => {
 	};
 
 	return (
-		<Modal className={styles.dialog} title={state.title} visible onOk={handleOk} onCancel={controllerDialog}>
+		<Modal
+			width="800px"
+			className={styles.dialog}
+			title={state.title}
+			visible
+			onOk={handleOk}
+			onCancel={controllerDialog}
+		>
 			<Form form={form} {...formLayout} layout="inline">
 				<Row className={styles.form_row}>
 					<FormItem name="type" label="所属项目" rules={[{ required: true }]}>
