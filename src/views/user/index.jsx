@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Spin, Table, Button } from 'antd';
+import { Spin, Table } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import Search from './Search';
 import './redux/reducer';
@@ -39,24 +39,24 @@ export default () => {
 			dataIndex: 'create_time',
 			key: 'create_time',
 		},
-		{
-			title: '操作',
-			dataIndex: 'operation',
-			key: 'operation',
-			render: () => (
-				<>
-					<Button onClick={() => {}} type="link">
-						支付记录
-					</Button>
-					<Button onClick={() => {}} type="link">
-						报名课程
-					</Button>
-					<Button onClick={() => {}} type="link">
-						组团课程
-					</Button>
-				</>
-			),
-		},
+		// {
+		// 	title: '操作',
+		// 	dataIndex: 'operation',
+		// 	key: 'operation',
+		// 	render: () => (
+		// 		<>
+		// 			{/* <Button onClick={() => {}} type="link">
+		// 				支付记录
+		// 			</Button>
+		// 			<Button onClick={() => {}} type="link">
+		// 				报名课程
+		// 			</Button>
+		// 			<Button onClick={() => {}} type="link">
+		// 				组团课程
+		// 			</Button> */}
+		// 		</>
+		// 	),
+		// },
 	];
 
 	const pageChange = (page) => {

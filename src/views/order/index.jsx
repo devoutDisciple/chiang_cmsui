@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Spin, Table } from 'antd';
-import { typeList } from '@constant/constant';
+import { typeList, filterEnglish, filterMath } from '@constant/constant';
 import { useSelector, useDispatch } from 'react-redux';
 import Search from './Search';
 import './redux/reducer';
@@ -36,6 +36,30 @@ export default () => {
 			key: 'userPhoto',
 			render: (txt, record) => <img alt="加载失败" className={styles.table_img} src={record.userDetail.photo} />,
 		},
+		{
+			title: '姓名',
+			dataIndex: 'name',
+			key: 'name',
+		},
+		{
+			title: '性别',
+			dataIndex: 'sex',
+			key: 'sex',
+			render: (txt) => <span>{txt === 1 ? '男' : '女'}</span>,
+		},
+		{
+			title: '英语',
+			dataIndex: 'english',
+			key: 'english',
+			render: (txt) => <span>{filterEnglish(txt)}</span>,
+		},
+		{
+			title: '数学',
+			dataIndex: 'math',
+			key: 'math',
+			render: (txt) => <span>{filterMath(txt)}</span>,
+		},
+
 		{
 			title: '手机号',
 			dataIndex: 'phone',
@@ -73,6 +97,11 @@ export default () => {
 			dataIndex: 'team',
 			key: 'team',
 			render: (txt, record) => <span>{record.type === 2 ? record.teamDetail.num : 0}</span>,
+		},
+		{
+			title: '入学时间',
+			dataIndex: 'time',
+			key: 'time',
 		},
 		{
 			title: '创建时间',
