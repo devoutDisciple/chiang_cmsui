@@ -10,7 +10,7 @@ const setLoading = (flag, dispatch) => {
 // 获取所有数据
 export const getOrderByPageFunc = (params) => (dispatch) => {
 	setLoading(true, dispatch);
-	getOrdersByPage()
+	getOrdersByPage(params)
 		.then((res) => {
 			dispatch({
 				type: 'order/setTableData',

@@ -90,7 +90,13 @@ export default () => {
 			title: '拼团/报名',
 			dataIndex: 'type',
 			key: 'sign',
-			render: (txt) => <span>{Number(txt) === 1 ? '报名' : '组团'}</span>,
+			render: (txt, record) => {
+				let teamState = '';
+				if (record.teamDetail) {
+					teamState = record.teamDetail.teamState;
+				}
+				return <span>{Number(txt) === 1 ? '报名' : `组团(${teamState})`}</span>;
+			},
 		},
 		{
 			title: '拼团人数',
